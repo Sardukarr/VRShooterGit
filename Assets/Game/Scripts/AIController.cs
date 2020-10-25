@@ -5,9 +5,10 @@ using UnityEngine;
 public class AIController : MonoBehaviour, IAction
 {
 
-    [SerializeField] float TimeBetweenAttacks = 2.0f;
-    [SerializeField] float Range = 2.0f;
-    [SerializeField] Health target = null;
+    [SerializeField] float timeBetweenAttacks = 2.0f;
+    [SerializeField] float range = 4.0f;
+    [SerializeField] int damage = 10;
+    Health target = null;
     private float TimeSinceLastAttack = 0f;
    // private Health target = null;
     private ActionScheduler actionScheduler = null;
@@ -20,6 +21,9 @@ public class AIController : MonoBehaviour, IAction
         actionScheduler = GetComponent<ActionScheduler>();
         mover = GetComponent<Mover>();
         animator = GetComponent<Animator>();
+
+        target = GameObject.FindGameObjectsWithTag("Player")[0].GetComponent<Health>();
+       // test.GetComponent
     }
 
 
@@ -35,10 +39,22 @@ public class AIController : MonoBehaviour, IAction
         TimeSinceLastAttack += Time.deltaTime;
         if (!CanAttack()) return;
 
+        
+
         if (IsInRange())
         {
+            //     if (IsTooClose())
+            //     {
+            //         mover.MoveAwayFrom(target.transform.position, 1f);
+            //      }
+            //     else
+            //    {
+
+            mover.Cancel();
+            // actionScheduler.CancelAction();
             AttackBehavior();
             mover.Cancel();
+        //    }
         }
         else
         {
@@ -58,7 +74,7 @@ public class AIController : MonoBehaviour, IAction
         Vector3 lookAt = target.transform.position;
         lookAt.y = 0;
         transform.LookAt(lookAt);
-        if (TimeSinceLastAttack >= TimeBetweenAttacks && !target.IsDead())
+        if (TimeSinceLastAttack >= timeBetweenAttacks && !target.IsDead())
         {
             animator.ResetTrigger("stopAttack");
             animator.SetTrigger("attack");
@@ -78,6 +94,18 @@ public class AIController : MonoBehaviour, IAction
     }
     private bool IsInRange()
     {
-        return target != null && (Vector3.Distance(transform.position, target.transform.position) <= Range);
+        return target != null && (Vector3.Distance(transform.position, target.transform.position) <= range);
     }
+    private bool IsTooClose()
+    {
+        return target != null && (Vector3.Distance(transform.position, target.transform.position) <= range/2);
+    }
+    private void Hit()
+    {
+
+         if (target != null & IsInRange())
+            //          target.TakeDamage(gameObject, currentWeapon.Damage);
+            target.TakeDamage(damage);//+currentWeapon.Damage);
+    }
+
 }

@@ -37,7 +37,7 @@ public class Health : MonoBehaviour
         if (isDead)
             return;
 
-        currentHealth -= 10;
+        currentHealth -= amount;
 
         if (currentHealth <= 0)
         {
@@ -45,7 +45,18 @@ public class Health : MonoBehaviour
         }
     }
 
+    public void TakeDamage(int amount )
+    {
+        if (isDead)
+            return;
 
+        currentHealth -= amount;
+
+        if (currentHealth <= 0)
+        {
+       //     Death();
+        }
+    }
     void Death()
     {
         isDead = true;

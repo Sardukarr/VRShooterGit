@@ -6,7 +6,6 @@ using UnityEngine.AI;
 public class Mover : MonoBehaviour, IAction
 {
     [SerializeField] float maxSpeed = 6f;
-    [SerializeField] float MaxNavMeshPathLength = 40f;
     NavMeshAgent myAgent;
     ActionScheduler actionScheduler;
     Health myHealth;
@@ -42,9 +41,17 @@ public class Mover : MonoBehaviour, IAction
         myAgent.speed = maxSpeed * Mathf.Clamp01(speedFraction);
         //destination.y = 0;
         myAgent.destination = destination;
-
     }
+   public void MoveAwayFrom(Vector3 destination, float speedFraction)
+    {
+        myAgent.isStopped = false;
+        myAgent.speed = -maxSpeed * Mathf.Clamp01(speedFraction);
+        //destination.y = 0;
+        Vector3 newDestination = transform.position - destination;
+        newDestination.Normalize();
 
+        myAgent.destination = newDestination;
+    }
     public void MoveWithinRange(Vector3 destination, float distance)
     {
         myAgent.SetDestination(destination);
