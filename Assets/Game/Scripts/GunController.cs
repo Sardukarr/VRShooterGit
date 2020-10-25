@@ -14,20 +14,18 @@ public class GunController : MonoBehaviour
 
     Ray shootRay = new Ray();
     RaycastHit shootHit;
-   // int shootableMask;
     ParticleSystem gunParticles;
     LineRenderer gunLine;
-   // AudioSource gunAudio;
-  //  Light gunLight;
+    AudioSource gunAudio;
+    Light gunLight;
 
 
     void Awake()
     {
-        //shootableMask = LayerMask.GetMask("Shootable");
         gunParticles = GetComponent<ParticleSystem>();
         gunLine = GetComponent<LineRenderer>();
-       // gunAudio = GetComponent<AudioSource>();
-      //  gunLight = GetComponent<Light>();
+       gunAudio = GetComponent<AudioSource>();
+       gunLight = GetComponent<Light>();
     }
 
     // Start is called before the first frame update
@@ -58,7 +56,7 @@ public class GunController : MonoBehaviour
     public void DisableEffects()
     {
         gunLine.enabled = false;
-      //  gunLight.enabled = false;
+        gunLight.enabled = false;
     }
     public void Shot()
     {
@@ -69,6 +67,10 @@ public class GunController : MonoBehaviour
 
             gunParticles.Stop();
             gunParticles.Play();
+
+            gunAudio.Play ();
+
+            gunLight.enabled = true;
 
             gunLine.enabled = true;
             gunLine.SetPosition(0, transform.position);

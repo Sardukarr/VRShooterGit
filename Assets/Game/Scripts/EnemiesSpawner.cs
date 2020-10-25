@@ -7,7 +7,10 @@ public class EnemiesSpawner : MonoBehaviour
     //public PlayerHealth playerHealth;
     [SerializeField] GameObject enemy;
     [SerializeField] float spawnTime = 2f;
-    [SerializeField] int numberOfSpawnPonts = 100;
+
+    // podzielne przez 4
+    int numberOfSpawnPonts = 100;
+    [SerializeField] int mapWidth = 200;
     [SerializeField] Transform spawnPointContainer;
     [SerializeField] Transform enemiesContainer;
     Vector3[] spawnPoints;
@@ -19,7 +22,10 @@ public class EnemiesSpawner : MonoBehaviour
     {
        spawnPoints = new Vector3[numberOfSpawnPonts];
         // spawnPoints = spawnPointContainer.g
-        RandomizeSpawnPoints();
+        RandomizeSpawnPoints(0, numberOfSpawnPonts/4,100, mapWidth, -mapWidth, mapWidth);
+        RandomizeSpawnPoints(numberOfSpawnPonts / 4, numberOfSpawnPonts / 2, -mapWidth, -100, -mapWidth, mapWidth);
+        RandomizeSpawnPoints(numberOfSpawnPonts / 2, numberOfSpawnPonts *3/4, -mapWidth, mapWidth, 100, mapWidth);
+        RandomizeSpawnPoints(numberOfSpawnPonts * 3 / 4, numberOfSpawnPonts, -mapWidth, mapWidth, -mapWidth, -100);
         InvokeRepeating("Spawn", spawnTime, spawnTime);
 
 
@@ -28,12 +34,13 @@ public class EnemiesSpawner : MonoBehaviour
 
 
 
-    void RandomizeSpawnPoints()
+    void RandomizeSpawnPoints(int from, int to, int minX, int maxX, int minZ, int maxZ )
     {
-       for(int i=0; i<numberOfSpawnPonts; i++)
+       for(int i= from; i< to; i++)
         {
-            int x = Random.Range(-250, 250);
-            int z = Random.Range(-250, 250);
+
+            int x = Random.Range(minX, maxX);
+            int z = Random.Range(minZ, maxZ);
           //  GameObject newSpawn = new GameObject();
           //  newSpawn.transform.position = new Vector3(x, 0, z);
 
@@ -54,6 +61,7 @@ public class EnemiesSpawner : MonoBehaviour
 
         int spawnPointIndex = Random.Range(0, numberOfSpawnPonts);
 
-        Instantiate(enemy, spawnPoints[spawnPointIndex], new Quaternion(0f,0f,0f,0f));
+        GameObject newEnemy =Instantiate(enemy, spawnPoints[spawnPointIndex], new Quaternion(0f,0f,0f,0f));
+        newEnemy.transform.parent = enemiesContainer;
     }
 }

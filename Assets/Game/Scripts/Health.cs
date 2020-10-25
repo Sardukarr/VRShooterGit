@@ -1,13 +1,16 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.Events;
 public class Health : MonoBehaviour
 {
     [SerializeField] int startingHealth = 100;
     [SerializeField] int currentHealth;
     [SerializeField] float disappearTime = 5f;
     [SerializeField] int scoreValue = 10;
+    [SerializeField] bool IsEnviroment = true;
+
+    [SerializeField] UnityEvent onDie;
 
     bool isDead;
     bool isDisapeparing;
@@ -54,21 +57,28 @@ public class Health : MonoBehaviour
 
         if (currentHealth <= 0)
         {
-       //     Death();
+            //TODO player death
+          //  Death();
         }
     }
     void Death()
     {
         isDead = true;
-        GetComponent<CapsuleCollider>().enabled = false;
-        GetComponent<Animator>().SetTrigger("die");
-        GetComponent<ActionScheduler>().CancelAction();
+        onDie.Invoke();
+
+        if (!IsEnviroment)
+        {
+            GetComponent<CapsuleCollider>().enabled = false;
+            GetComponent<Animator>().SetTrigger("die");
+            GetComponent<ActionScheduler>().CancelAction();
+            GetComponent<UnityEngine.AI.NavMeshAgent>().enabled = false;
+        }
+
         Disappear();
     }
 
     public void Disappear()
     {
-        GetComponent<UnityEngine.AI.NavMeshAgent>().enabled = false;
         GetComponent<Rigidbody>().isKinematic = true;
         isDisapeparing = true;
         Destroy(gameObject,disappearTime);

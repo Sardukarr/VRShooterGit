@@ -102,10 +102,16 @@ public class AIController : MonoBehaviour, IAction
     }
     private void Hit()
     {
-
+        OnHit();
          if (target != null & IsInRange())
             //          target.TakeDamage(gameObject, currentWeapon.Damage);
             target.TakeDamage(damage);//+currentWeapon.Damage);
     }
 
+    public void OnHit()
+    {
+        var soundFX = GetComponentInChildren<SFXRandomizer>();
+        if (soundFX != null)
+            soundFX.RandomizeAndPlay();
+    }
 }
