@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.SceneManagement;
+
 public class Health : MonoBehaviour
 {
     [SerializeField] int startingHealth = 100;
-    [SerializeField] int currentHealth;
+    int currentHealth;
     [SerializeField] float disappearTime = 5f;
     [SerializeField] int scoreValue = 10;
     [SerializeField] bool IsEnviroment = true;
@@ -34,7 +36,10 @@ public class Health : MonoBehaviour
         }
     }
 
-
+    public int getCurrentHP()
+    {
+        return currentHealth;
+    }
     public void TakeDamage(int amount, Vector3 hitPoint)
     {
         if (isDead)
@@ -72,6 +77,7 @@ public class Health : MonoBehaviour
             GetComponent<Animator>().SetTrigger("die");
             GetComponent<ActionScheduler>().CancelAction();
             GetComponent<UnityEngine.AI.NavMeshAgent>().enabled = false;
+            UIManager.ScorePoints(scoreValue);
         }
 
         Disappear();
