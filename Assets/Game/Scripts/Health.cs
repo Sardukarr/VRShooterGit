@@ -63,6 +63,7 @@ public class Health : MonoBehaviour
         if (currentHealth <= 0)
         {
             //TODO player death
+            DisablePlayer();
           //  Death();
         }
     }
@@ -82,6 +83,12 @@ public class Health : MonoBehaviour
 
         Disappear();
     }
+
+    void DisablePlayer()
+    {
+        isDead = true;
+    }
+
 
     public void Disappear()
     {

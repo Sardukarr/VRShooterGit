@@ -11,14 +11,13 @@ public class GunController : MonoBehaviour
     [SerializeField] float range = 100f;
     [SerializeField] float  effectsDisplayTime = 0.2f;
     float lastShoot=1f;
-
     Ray shootRay = new Ray();
     RaycastHit shootHit;
     ParticleSystem gunParticles;
     LineRenderer gunLine;
     AudioSource gunAudio;
     Light gunLight;
-
+    Health myHealth;
 
     void Awake()
     {
@@ -26,7 +25,9 @@ public class GunController : MonoBehaviour
         gunLine = GetComponent<LineRenderer>();
        gunAudio = GetComponent<AudioSource>();
        gunLight = GetComponent<Light>();
+       myHealth = GetComponentInParent<Health>();
     }
+
 
     // Start is called before the first frame update
     void Start()
@@ -40,7 +41,7 @@ public class GunController : MonoBehaviour
         lastShoot += Time.deltaTime;
 
 
-        if (Input.GetButton("Fire1")|| Input.touchCount==1)
+        if ((Input.GetButton("Fire1")|| Input.touchCount==1) && !myHealth.IsDead())
             {
             Shot();
             }

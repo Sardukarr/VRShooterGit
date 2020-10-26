@@ -312,7 +312,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 54d9647f657f91c4f8304a57bab8a879, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxSpeed: 6
+  maxSpeed: 5
 --- !u!114 &8374105318914655270
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -326,8 +326,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   startingHealth: 100
-  currentHealth: 0
-  disappearTime: 5
+  disappearTime: 120
   scoreValue: 10
   IsEnviroment: 0
   onDie:
